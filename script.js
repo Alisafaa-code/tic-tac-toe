@@ -1,15 +1,23 @@
 const cells = document.querySelectorAll(".cell");
 const resetButton = document.querySelector("[data-reset-button]");
+const playerX = document.querySelector("[data-playerX]");
+const playerO = document.querySelector("[data-playerO]");
 
 let currentPlayer = "X";
 let gameActive = true;
 let board = new Array(9).fill("");
 
 const handleCellClick = (e) => {
-     const id = Number(e.target.dataset.index);
-     if (!gameActive || board[id]) return;
+     const id = Number(e.target.dataset.index); // turn index dataset into Number
+     if (!gameActive || board[id]) return; // if gameActive is false or board is full stop
      board[id] = currentPlayer;
      e.target.textContent = currentPlayer;
+
+     if (currentPlayer == "X") {
+          e.target.style.color = "red";
+     } else {
+          e.target.style.color = "#1976d2";
+     }
 
      const winner = checkWin();
 
@@ -23,15 +31,16 @@ const handleCellClick = (e) => {
           setTimeout(() => alert("It's a draw!"), 100);
           return;
      }
-     currentPlayer = currentPlayer === "X" ? "O" : "X";
 
-     if (currentPlayer !== "X") {
-          e.target.style.color = "red";
+     currentPlayer = currentPlayer === "X" ? "O" : "X"; // if current player equal x or will o
+
+     if (currentPlayer == "X") {
+          playerX.classList.add("active");
+          playerO.classList.remove("active");
      } else {
-          e.target.style.color = "#1976d2;";
+          playerO.classList.add("active");
+          playerX.classList.remove("active");
      }
-
-     console.log(e.target.style.color);
 };
 
 const checkWin = () => {
